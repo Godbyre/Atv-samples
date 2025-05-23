@@ -41,22 +41,7 @@ allprojects {
     }
 }
 
-subprojects {
-    apply plugin: "com.diffplug.spotless"
-    ext.ktlintVer = "0.37.2"
-    spotless {
-        kotlin {
-            target("**/*.kt")
-            ktlint(ktlintVer).userData(["max_line_length" : "100"])
-            licenseHeaderFile(project.rootProject.file("copyright.kt"))
-        }
-    }
 
-    tasks.whenTaskAdded {
-        if (name == "preBuild") {
-            mustRunAfter("spotlessCheck")
-        }
-    }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
@@ -73,3 +58,19 @@ ext {
     archRoomVersion = "2.0.0-rc01"
 }
 
+subprojects {
+    apply plugin: "com.diffplug.spotless"
+    ext.ktlintVer = "0.37.2"
+    spotless {
+        kotlin {
+            target("**/*.kt")
+            ktlint(ktlintVer).userData(["max_line_length" : "100"])
+            licenseHeaderFile(project.rootProject.file("copyright.kt"))
+        }
+    }
+
+    tasks.whenTaskAdded {
+        if (name == "preBuild") {
+            mustRunAfter("spotlessCheck")
+        }
+    }
